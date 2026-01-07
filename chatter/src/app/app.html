@@ -1,2 +1,9 @@
 <h1>Hello World!</h1>
 <p>{{ response() }}</p>
+
+<form (ngSubmit)="sendRequest()" #inputForm="ngForm">
+  <label for="inputText">Input Text:</label>
+  <input id="inputText" type="text" [(ngModel)]="inputText" name="inputText" />
+  <p>Current Input: {{ inputText }}</p>
+  <button type="submit">Send</button>
+</form>

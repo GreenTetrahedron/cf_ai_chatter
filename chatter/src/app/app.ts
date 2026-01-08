@@ -7,10 +7,10 @@ import { Chat } from "./chat/chat/chat";
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, Chat],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-
+  
 }

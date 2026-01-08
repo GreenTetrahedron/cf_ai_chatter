@@ -1,0 +1,13 @@
+<main>
+    <div class="title-container">
+        <h1>
+            Chat with Chatter!
+        </h1>
+        <p class="conversation-id">Chat ID: {{ conversationId() }}</p>
+        <p class="expiry">Expires on: {{ expiry() | date: 'dd MMM yyyy @ hh:mm:ss' }}</p>
+    </div>
+
+    <div class="content">
+        <app-chat></app-chat>
+    </div>
+</main>

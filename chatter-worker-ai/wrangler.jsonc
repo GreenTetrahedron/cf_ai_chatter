@@ -12,7 +12,23 @@
 	},
 	"ai": {
 		"binding": "AI"
-	}
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "CHATTER_DURABLE_OBJECT",
+				"class_name": "ChatterDurableObject"
+			}
+		]
+	},
+	"migrations": [
+		{
+		"tag": "v1",
+		"new_sqlite_classes": [
+			"ChatterDurableObject"
+		]
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

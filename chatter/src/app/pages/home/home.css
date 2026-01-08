@@ -1,0 +1,20 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    color: #ccc;
+    margin: 25px 0;
+}
+
+.title-container h1 {
+    color: #88d888;
+}

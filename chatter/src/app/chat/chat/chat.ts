@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, ElementRef, inject, signal, Signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, signal, Signal, ViewChild } from '@angular/core';
 import { MessageList } from "../../message/message-list/message-list";
 import { ChatMessage } from '../../message/chat-message';
 import { ChatService } from '../chat-service';
-import { AiMessage } from '../ai-message';
 import { FormsModule } from '@angular/forms';
 import { catchError, finalize, Observable } from 'rxjs';
 
@@ -32,13 +31,14 @@ export class Chat {
       
       this.messages.update(messages => [...messages,
                   ...aiMessages()
-                    .slice(messages.length + 1)
+                    .slice(messages.length)
                     .filter(m => m.role != "system")
                     .map(ChatMessage.aiToChatMessage)]);
     });
   }
 
   ngOnInit() {
+    this.chatService.initialise();
   }
   
   sendRequest() {

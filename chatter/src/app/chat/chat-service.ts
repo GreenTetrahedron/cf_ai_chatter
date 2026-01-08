@@ -33,14 +33,16 @@ export class ChatService {
 
         this.messages.update(values => [...values, new AiMessage("user", message)]);
 
+        return this.retryLastMessage();
+    }
+
+    retryLastMessage(): Observable<string> {
         const requestBody = { messages: this.messages().map(m => ({ role: m.role, content: m.content })) };
 
         console.info("Request body:", requestBody);
-        var request = this.http.post<string>(this.url, requestBody);
+        var request = this.http.post<string>(this.url, requestBody).pipe(shareReplay(1));
 
-        request.pipe(
-            shareReplay(1)
-        ).subscribe((response: any) => {
+        request.subscribe((response: any) => {
             console.info("Received response:", response);
             this.messages.update(values => [...values, new AiMessage("assistant", response.response)]);
         });

@@ -1,10 +1,23 @@
 <div class="chat-box">
-    <div class="chat-summary-container">
-        <h2>Chat Summary</h2>
-    </div>
     <div #messageList class="message-list-container">
         <app-message-list [messages]="messages()"></app-message-list>
     </div>
+
+    @if (waitingForMessage() || errorMessage() != null) {
+        <div class="status-bar">
+            @if (waitingForMessage()) {
+                <div class="status-message loading-indicator">
+                    <span>AI is thinking...</span>
+                </div>
+            }
+            @if (errorMessage() != null) {
+                <div class="status-message error-message">
+                    <p>Failed to send last message</p>
+                    <button class="try-again-button" (click)="tryAgain()">Retry</button>
+                </div>
+            }
+        </div>
+    }
         
     <form (ngSubmit)="sendRequest()" #inputForm="ngForm" class="message-input-form">
         <input placeholder="Enter a message" id="inputText" type="text" [(ngModel)]="inputText" name="inputText" />

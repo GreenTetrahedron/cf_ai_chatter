@@ -59,12 +59,17 @@ body {
     font-family: 'Segoe UI';
 }
 
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
 .message--ai {
     line-height: 1.2;
 }
 .message--ai ol, .message--ai ul {
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .message--ai ol {
     list-style: numbered;
@@ -123,4 +128,10 @@ h2 {
     background-color: #f4f4f4;
     padding: 2px 4px;
     border-radius: 4px;
+    max-width: 100%;
+}
+
+
+.message--ai p:last-child {
+    margin-bottom: 0;
 }

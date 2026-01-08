@@ -1,18 +1,27 @@
 .message {
     word-wrap: break-word;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 16px;
+    max-width: 100%;
+    overflow: hidden;
 }
 .message--user {
     background-color: #daf1da;
-    text-align: right;
-    max-width: 70%;
     width: fit-content;
     justify-self: end;
     border-radius: 12px 12px 0 12px;
-    border: 1px solid #ccc;
-    padding: 10px 10px 10px 12px;
-
+    padding-left: 14px;
+    min-width: 100px;
+    text-wrap: wrap;
 }
 .message--ai {
-    padding: 10px;
+    background-color: #f1daf1;
+    border-radius: 12px 12px 12px 0;
+    max-width: 100%;
 }
 
+app-message:has(.message) {
+    max-width: 100%;
+    overflow-x: hidden;
+}

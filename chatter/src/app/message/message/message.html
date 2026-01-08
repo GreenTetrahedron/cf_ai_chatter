@@ -1,7 +1,4 @@
-@if (message().message == '' || message().message == null) {
-    <p>Loading...</p>
-}
-@else {
+@if (message() != null) {
     <div class="message {{ message().sender == 'user' ? 'message--user' : 'message--ai' }}">
         <div class="message-content">
             <remark [markdown]="message().message"></remark>

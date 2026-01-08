@@ -34,25 +34,38 @@ export default {
 			return new Response("Method Not Allowed", {status: 405, statusText: "Method Not Allowed", headers: corsHeaders}
 		)
 
-		try {
-			console.info("Received request:", request);
+		let lastError;
+
+		console.info("Received request:", request);
+			
+		const body: { messages: { role: string, content: string }[] } = await request.json();
+		
+		console.info("Received messages:", body.messages);
+
+		if (body.messages[body.messages.length - 1].content == null || body.messages[body.messages.length - 1].content == '')
+			return new Response("Invalid message sent", {status: 405, statusText: "Invalid message", headers: corsHeaders})
+
+		// Retry upto 3 times
+		for (let i = 0; i < 3; i++)
+		{
+			try {		
+				const response: any = await env.AI.run("@cf/meta/llama-3.1-8b-instruct",
+					{
+						max_tokens: 512,
+						messages: body.messages
+					});
 				
-			const body: { messages: { role: string, content: string }[] } = await request.json();
-			
-			console.info("Received messages:", body.messages);
-			
-			const response: any = await env.AI.run("@cf/meta/llama-3.1-8b-instruct",
-				{
-					max_tokens: 512,
-					messages: body.messages
-				});
-			
-			console.info("AI Response:", response);
-			
-			return new Response(JSON.stringify(response), {status: 200, statusText: "OK", headers: corsHeaders});
-		} catch (err) {
-			console.error("Error processing request:", err);
-			return new Response(JSON.stringify({error: "Failed to process request"}), {status: 500, statusText: "Failed to process request", headers: corsHeaders});
+				console.info("AI Response:", response);
+				
+				return new Response(JSON.stringify(response), {status: 200, statusText: "OK", headers: corsHeaders});
+			} catch (err) {
+				lastError = err;
+				console.warn("Attempt " + (i + 1) + " failed... Trying again. \n Error: ", err)
+			    await new Promise(resolve => setTimeout(resolve, 500));
+			}
 		}
+
+		console.error("All retries failed. Last error encountered: " + lastError);
+		return new Response(JSON.stringify({error: "Failed to process request"}), {status: 500, statusText: "Failed to process request", headers: corsHeaders});
 	},
 } satisfies ExportedHandler<Env>;

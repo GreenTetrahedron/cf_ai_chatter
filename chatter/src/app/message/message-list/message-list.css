@@ -1,0 +1,5 @@
+.message-list {
+    display: grid;
+    grid-auto-rows: auto;
+    margin-bottom: 50px;
+}

@@ -1,0 +1,5 @@
+<div class="message-list">
+    @for (message of messages(); track message.id) {
+        <app-message [message]="message"></app-message>
+    }
+</div>

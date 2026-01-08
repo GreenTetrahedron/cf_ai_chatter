@@ -1,0 +1,97 @@
+.message-list-container {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 16px;
+}
+
+.message-input-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    margin: 0 16px;
+}
+
+.send-button {
+    position: relative;
+    cursor: pointer;
+    aspect-ratio: 1;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+.send-button:hover .send-icon-container {
+    filter: opacity(0.7);
+    transition: filter 0.2s ease-in-out;
+}
+.send-button:hover {
+    border-color: #888;
+}
+
+.send-icon-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    display: flex;
+    place-items: center;
+    padding: 12px;
+    filter: opacity(0.5);
+}
+.send-button:disabled .send-icon-container {
+    filter: opacity(0);
+    transition: none;
+}
+.send-button:disabled::after {
+    content: '';
+    position: absolute;
+    background-color: #000;
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    padding: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.7;
+}
+.send-icon {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.message-input-form > input[type="text"] {
+    border: 0.5px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #333;
+}
+.message-input-form > input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+.message-input-form > input:focus {
+    outline: none;
+    border-color: #888;
+}
+
+.chat-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 700px;
+    height: 400px;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 50px 1fr 50px;
+    padding-bottom: 16px;
+}
+
+.chat-summary-container {
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+}

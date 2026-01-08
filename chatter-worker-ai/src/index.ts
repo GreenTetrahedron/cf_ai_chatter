@@ -17,12 +17,10 @@ export interface Env {
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		// const messages: {role: string, content: string} = await request.json().then(r => r.messages.map((m: any) => ({role: m.role, content: m.content})))
 		var corsHeaders = {
-			'Connection': 'keep-alive',
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type'
+			'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 		}
 
 		if (request.method == "OPTIONS") {
@@ -32,16 +30,29 @@ export default {
 		if (request.method == "GET")
 			return new Response("Chatter Worker AI is running. Please use POST requests to interact with the AI.", {status: 200, statusText: "OK", headers: corsHeaders});
 
-		const thing: any = await request.json();
+		if (request.method != "POST")
+			return new Response("Method Not Allowed", {status: 405, statusText: "Method Not Allowed", headers: corsHeaders}
+		)
 
-		console.info("Received messages:", thing.messages);
-
-		const response: any = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
-			messages: thing.messages,
-		});
-
-		console.info("AI Response:", response);
-
-		return new Response(JSON.stringify(response.response), {status: 200, statusText: "OK", headers: corsHeaders});
+		try {
+			console.info("Received request:", request);
+				
+			const body: { messages: { role: string, content: string }[] } = await request.json();
+			
+			console.info("Received messages:", body.messages);
+			
+			const response: any = await env.AI.run("@cf/meta/llama-3.1-8b-instruct",
+				{
+					max_tokens: 512,
+					messages: body.messages
+				});
+			
+			console.info("AI Response:", response);
+			
+			return new Response(JSON.stringify(response), {status: 200, statusText: "OK", headers: corsHeaders});
+		} catch (err) {
+			console.error("Error processing request:", err);
+			return new Response(JSON.stringify({error: "Failed to process request"}), {status: 500, statusText: "Failed to process request", headers: corsHeaders});
+		}
 	},
 } satisfies ExportedHandler<Env>;

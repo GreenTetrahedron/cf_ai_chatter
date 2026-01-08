@@ -1,0 +1,18 @@
+.message {
+    word-wrap: break-word;
+}
+.message--user {
+    background-color: #daf1da;
+    text-align: right;
+    max-width: 70%;
+    width: fit-content;
+    justify-self: end;
+    border-radius: 12px 12px 0 12px;
+    border: 1px solid #ccc;
+    padding: 10px 10px 10px 12px;
+
+}
+.message--ai {
+    padding: 10px;
+}
+

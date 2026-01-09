@@ -20,11 +20,12 @@
     flex-direction: column;
     color: #555;
     margin: 25px 0 15px 0;
+    gap: 5px;
 }
 
 .title-container h1 {
     color: #88d888;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .title-container p {

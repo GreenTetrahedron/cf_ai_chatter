@@ -5,13 +5,14 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { ChatService } from './chat/chat-service';
 import { Chat } from "./chat/chat/chat";
 import { LogService } from './log/log-service';
+import { Footer } from "./footer/footer";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  
+
 }

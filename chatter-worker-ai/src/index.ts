@@ -115,8 +115,6 @@ export default {
 			'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 		}
 
-		console.log(env.PAGE_URL);
-
 		if (request.method == "OPTIONS") {
 			return new Response(null, {status: 204, statusText: "OK", headers: corsHeaders});
 		}

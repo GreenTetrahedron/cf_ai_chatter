@@ -1,6 +1,6 @@
 # Chatter
 
-A web LLM chat application powered by Cloudflare.
+A web LLM chat application powered by Cloudflare. It is available [here](https://chatter-di8.pages.dev/).
 
 
 ## Flow Design

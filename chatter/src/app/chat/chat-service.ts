@@ -5,6 +5,7 @@ import { AiMessage } from "./ai-message";
 import { routes } from "../app.routes";
 import { ActivatedRoute } from "@angular/router";
 import { LogService } from "../log/log-service";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ import { LogService } from "../log/log-service";
 
 export class ChatService {
     private readonly http = inject(HttpClient);
-    private readonly url = "https://chatter-worker-ai.maniarhamza01.workers.dev/";
+    private readonly url = environment.apiUrl;
 
     private activatedRoute = inject(ActivatedRoute);
 

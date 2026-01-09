@@ -15,7 +15,8 @@ import { DurableObject } from "cloudflare:workers";
 
 export interface Env {
 	AI: Ai,
-	CHATTER_DURABLE_OBJECT: DurableObjectNamespace<ChatterDurableObject>
+	CHATTER_DURABLE_OBJECT: DurableObjectNamespace<ChatterDurableObject>,
+	PAGE_URL: string
 }
 
 export class ChatterDurableObject extends DurableObject<Env> {
@@ -108,10 +109,13 @@ export class ChatterDurableObject extends DurableObject<Env> {
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
 		var corsHeaders = {
-			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Origin': env.PAGE_URL,
+			'Vary': 'Origin',
 			'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
 			'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 		}
+
+		console.log(env.PAGE_URL);
 
 		if (request.method == "OPTIONS") {
 			return new Response(null, {status: 204, statusText: "OK", headers: corsHeaders});

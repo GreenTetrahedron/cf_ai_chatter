@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { ChatMessage } from '../chat-message';
 import { RemarkModule } from 'ngx-remark';
 

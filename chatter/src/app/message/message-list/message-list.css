@@ -4,3 +4,9 @@
     margin-bottom: 50px;
     overflow-x: hidden;
 }
+
+app-message {
+    max-width: 100%;
+    display: grid;
+    overflow-x: hidden;
+}

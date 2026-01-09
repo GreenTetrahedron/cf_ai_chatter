@@ -49,18 +49,23 @@ table {
 
 
 
-
-
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/roboto/Roboto-VariableFont_wdth,wght.ttf") format("ttf");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 
 body {
     max-height: 100vh;
-    font-family: 'Segoe UI';
+    font-family: 'Roboto';
 }
 
 h1 {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .message--ai {

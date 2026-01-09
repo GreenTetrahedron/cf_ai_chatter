@@ -1,13 +1,15 @@
 .content {
-    display: grid;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    justify-items: center;
     max-width: 100%;
     overflow: hidden;
     padding: 0 15px;
 }
 
 .content * {
+    flex: 1;
+    max-width: min(700px, 100%);
 }
 
 .title-container {

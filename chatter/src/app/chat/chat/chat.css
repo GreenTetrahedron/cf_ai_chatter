@@ -87,7 +87,6 @@
 .chat-box {
     border: 1px solid #ccc;
     border-radius: 12px;
-    max-width: 700px;
     height: 75vh;
     overflow: hidden;
     display: grid;

@@ -1,7 +1,13 @@
 .content {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 15px;
+}
+
+.content * {
 }
 
 .title-container {
@@ -10,11 +16,16 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 15px;
-    color: #ccc;
-    margin: 25px 0;
+    color: #555;
+    margin: 25px 0 15px 0;
 }
 
 .title-container h1 {
     color: #88d888;
+    margin-bottom: 15px;
+}
+
+.title-container p {
+    font-size: 12px;
+    line-height: 1.4;
 }

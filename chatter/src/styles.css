@@ -48,16 +48,6 @@ table {
 }
 
 
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/fonts/roboto/Roboto-VariableFont_wdth,wght.ttf") format("ttf");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-
 body {
     max-height: 100vh;
     font-family: 'Roboto';

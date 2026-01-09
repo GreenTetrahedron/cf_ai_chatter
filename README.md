@@ -3,7 +3,7 @@
 A web LLM chat application powered by Cloudflare.
 
 
-## High-Level Design
+## Flow Design
 
 ```
 Pages (Frontend)

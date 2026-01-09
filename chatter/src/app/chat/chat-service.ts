@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
-import { Inject, inject, Injectable, input, Signal, signal } from "@angular/core";
+import { computed, Inject, inject, Injectable, input, Signal, signal } from "@angular/core";
 import { Observable, shareReplay } from "rxjs";
 import { AiMessage } from "./ai-message";
 import { routes } from "../app.routes";
 import { ActivatedRoute } from "@angular/router";
+import { LogService } from "../log/log-service";
 
 @Injectable({
     providedIn: 'root'
@@ -15,15 +16,12 @@ export class ChatService {
 
     private activatedRoute = inject(ActivatedRoute);
 
-    private readonly conversationId = signal<string>('');
+    private conversationId = signal<string>('');
 
     private messages = signal<AiMessage[]>([]);
     private expiry = signal<Date>(new Date(Date.now()));
 
-
-    constructor() {
-        this.conversationId.set(this.activatedRoute.snapshot.root.firstChild?.params['id']);
-    }
+    private logs = inject(LogService);
 
     getConversationId(): Signal<string> {
         return this.conversationId;
@@ -37,16 +35,23 @@ export class ChatService {
         return this.expiry;
     }
 
-    initialise() {
+    initialise(conversationId: string) {
+        this.logs.log("Reinitialising: " + Date.now().toString());
+        this.conversationId.set(conversationId);
+
         const response = this.http.get<string>(this.url + "?conversationId=" + this.conversationId());
 
         response.pipe(shareReplay(1))
             .subscribe((response: any) => {
+                this.logs.log("Updating messages: " + JSON.stringify(response));
+
                 this.expiry.set(response.expiry);
 
                 this.messages.set(response.messages
                     .filter((message: {role: string, content: string}) => message.role != "system")
                     .map((message: {role: string, content: string}) => new AiMessage(message.role, message.content)));
+                
+                this.logs.log("New messages length: " + this.messages().length);
             });
 
         return response;
@@ -54,11 +59,11 @@ export class ChatService {
     
     // Sends a message to the chat bot and returns the response as a string.
     sendMessage(message: string): Observable<string> {
-        console.info("Sending message:", message);
+        this.logs.log("Sending message: " + message);
 
         this.messages.update(values => [...values, new AiMessage("user", message)]);
 
-        console.log(this.messages());
+        this.logs.log(this.messages());
 
         return this.retryLastMessage();
     }
@@ -66,11 +71,11 @@ export class ChatService {
     retryLastMessage(): Observable<string> {
         const requestBody = { conversationId: this.conversationId(), message: this.messages()[this.messages().length - 1].content };
 
-        console.info("Request body:", requestBody);
+        this.logs.log("Request body:" + JSON.stringify(requestBody));
         var request = this.http.post<string>(this.url, requestBody).pipe(shareReplay(1));
 
         request.subscribe((response: any) => {
-            console.info("Received response:", response);
+            this.logs.log("Received response:" + JSON.stringify(response));
             this.messages.update(values => [...values, new AiMessage("assistant", response.response)]);
         });
 

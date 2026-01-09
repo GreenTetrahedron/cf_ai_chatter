@@ -1,6 +1,7 @@
-import { Component, ElementRef, input, Signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, Signal, ViewChild } from '@angular/core';
 import { Message } from "../message/message";
 import { ChatMessage } from '../chat-message';
+import { LogService } from '../../log/log-service';
 
 @Component({
   selector: 'app-message-list',
@@ -9,5 +10,13 @@ import { ChatMessage } from '../chat-message';
   imports: [Message],
 })
 export class MessageList {
-  messages = input<ChatMessage[]>([]);
+  messages = input.required<ChatMessage[]>();
+
+  private log = inject(LogService);
+  
+  constructor() {
+    effect(() => {
+      this.log.log(this.messages().length);
+    });
+  }
 }

@@ -4,6 +4,8 @@ import { ChatMessage } from '../../message/chat-message';
 import { ChatService } from '../chat-service';
 import { FormsModule } from '@angular/forms';
 import { catchError, finalize, Observable } from 'rxjs';
+import { LogService } from '../../log/log-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -15,6 +17,7 @@ export class Chat {
   @ViewChild('messageList') private messageList! : ElementRef;
 
   private chatService = inject(ChatService);
+  private chatServiceMessages = this.chatService.getMessages();
   messages = signal<ChatMessage[]>([]);
 
   errorMessage = signal<string | null>(null);
@@ -22,25 +25,30 @@ export class Chat {
   waitingForMessage = signal(false);
 
   inputText: string = '';
-  lastInputText: string = '';
+  private lastInputText: string = '';
+
+  private route = inject(ActivatedRoute);
+
+  private log = inject(LogService);
 
   constructor(private ref: ChangeDetectorRef)
   {
+    this.route.params.subscribe((params) => {
+      this.chatService.initialise(params['id']);
+      this.messages.set([]);
+    });
+
     effect(() => {
-      const aiMessages = this.chatService.getMessages();
-      
+      const aiMessages = this.chatServiceMessages();
+
       this.messages.update(messages => [...messages,
-                  ...aiMessages()
+                  ...aiMessages
                     .slice(messages.length)
                     .filter(m => m.role != "system")
                     .map(ChatMessage.aiToChatMessage)]);
     });
   }
 
-  ngOnInit() {
-    this.chatService.initialise();
-  }
-  
   sendRequest() {
     if (this.inputText == null || this.inputText == '')
         return;
@@ -68,7 +76,7 @@ export class Chat {
     observable
       .pipe(
         catchError((error) => {
-          console.error("Error sending message:", error);
+          this.log.error("Error sending message: " + error);
           this.errorMessage.set("Error sending message: " + error.message);
           throw error;
         }),
@@ -83,7 +91,7 @@ export class Chat {
   }
 
   scrollToBottomOfMessages() {
-    console.log("Scrolling to bottom of message list");
+    this.log.log("Scrolling to bottom of message list");
     this.messageList.nativeElement.scrollTop = this.messageList.nativeElement.scrollHeight;
   }
 }

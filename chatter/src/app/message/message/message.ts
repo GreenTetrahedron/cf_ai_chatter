@@ -9,5 +9,5 @@ import { RemarkModule } from 'ngx-remark';
   styleUrl: './message.css',
 })
 export class Message {
-  message = input<ChatMessage>(new ChatMessage('', 'user', ''));
+  message = input.required<ChatMessage>();
 }
